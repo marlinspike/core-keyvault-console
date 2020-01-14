@@ -32,7 +32,11 @@ namespace Core_KeyVault_Console {
             //string token = KeyVaultHelper.getToken();
             AzureServiceTokenProvider azureServiceTokenProvider = new AzureServiceTokenProvider();
             KeyVaultClient keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
-            var secret = await keyVaultClient.GetSecretAsync($"https://{KeyVaultName}.vault.azure.net/secrets/" + secretName);
+
+            //For Microsoft Azure Government Key Vaults, use the following URL: *.vault.usgovcloudapi.net
+            //var secret = await keyVaultClient.GetSecretAsync($"https://{KeyVaultName}.vault.usgovcloudapi.net/secrets/{secretName}");
+            
+            var secret = await keyVaultClient.GetSecretAsync($"https://{KeyVaultName}.vault.azure.net/secrets/{secretName}");
 
             return secret.Value;
         }
